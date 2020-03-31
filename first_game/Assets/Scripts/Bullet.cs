@@ -20,7 +20,7 @@ public class Bullet : MonoBehaviour
         right = Camera.main.ViewportToWorldPoint(new Vector3(1f, 0f)).x;
         left = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0f)).x;
         top = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f)).y;
-        bottom = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0f)).y;
+        bottom = Camera.main.ViewportToWorldPoint(new Vector3(0f, -0.01f)).y;
         force = transform.up * speed;
     }
 
@@ -29,12 +29,31 @@ public class Bullet : MonoBehaviour
         MoveBullet();
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        GameObject hitObject = collision.gameObject;
+        if (hitObject.CompareTag("Brick")) {
+            Vector2 brickCoord = hitObject.transform.position;
+
+            //coord of border point
+            float width = hitObject.GetComponent<SpriteRenderer>().bounds.extents.x;
+            float height = hitObject.GetComponent<SpriteRenderer>().bounds.extents.y;
+            Vector2 topLeft = new Vector2(brickCoord.x - width, brickCoord.y + height);
+            Vector2 topRight = new Vector2(brickCoord.x + width, brickCoord.y + height);
+            Vector2 bottomLeft = new Vector2(brickCoord.x - width, brickCoord.y - height);
+            Vector2 bottomRight = new Vector2(brickCoord.x + width, brickCoord.y - height);
+
+            if (transform.position.x > bottomLeft.x && transform.position.x < bottomRight.x)
+                ReverseY();
+            else if (transform.position.y > bottomLeft.y && transform.position.y < topLeft.y)
+                ReverseX();
+        }
+    }
+
     void MoveBullet()
     {
-        rb.AddForce(force);
-        if (transform.position.x >= right && onScreen)
-            ReverseX();
-        else if (transform.position.x <= left && onScreen)
+        rb.velocity = force;
+        if ((transform.position.x >= right || transform.position.x <= left) && onScreen)
             ReverseX();
         else if (transform.position.y >= top && onScreen)
             ReverseY();
@@ -46,7 +65,7 @@ public class Bullet : MonoBehaviour
 
     void DestroyBullet()
     {
-        Destroy(this.gameObject);
+        Destroy(gameObject);
     }
 
     void ReverseX()

@@ -5,11 +5,14 @@ using UnityEngine;
 public class Arrow : MonoBehaviour
 {
     public GameObject bullet;
+    public int countBullets = 1;
+    public float cooldown = 0.5f;
+
     private Vector3 startPosition;
 
     void Start()
     {
-        startPosition = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.01f));
+        startPosition = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0f));
         startPosition.z = 0f;
         transform.position = startPosition;
 
