@@ -24,9 +24,10 @@ public class Brick : MonoBehaviour
         if (collision.gameObject.CompareTag("Ball"))
         {
             count--;
-            textCount.text = count.ToString();
             if (count == 0)
                 Destroy(gameObject);
+            else
+                textCount.text = count.ToString();
         }
     }
 }

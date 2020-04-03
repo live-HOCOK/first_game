@@ -32,7 +32,8 @@ public class Bullet : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         GameObject hitObject = collision.gameObject;
-        if (hitObject.CompareTag("Brick")) {
+        Debug.Log(hitObject.tag);
+        //if (hitObject.CompareTag("Brick")) {
             Vector2 brickCoord = hitObject.transform.position;
 
             //coord of border point
@@ -47,7 +48,7 @@ public class Bullet : MonoBehaviour
                 ReverseY();
             else if (transform.position.y > bottomLeft.y && transform.position.y < topLeft.y)
                 ReverseX();
-        }
+        //}
     }
 
     void MoveBullet()
@@ -73,6 +74,7 @@ public class Bullet : MonoBehaviour
         onScreen = false;
         force.x = -force.x;
         rb.velocity = new Vector2(-rb.velocity.x, rb.velocity.y);
+        Debug.Log("x");
     }
 
     void ReverseY()
@@ -80,5 +82,6 @@ public class Bullet : MonoBehaviour
         onScreen = false;
         force.y = -force.y;
         rb.velocity = new Vector2(rb.velocity.x, -rb.velocity.y);
+        Debug.Log("y");
     }
 }
