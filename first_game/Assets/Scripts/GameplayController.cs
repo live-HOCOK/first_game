@@ -6,17 +6,15 @@ public class GameplayController : MonoBehaviour
 {
     public GameObject brick;
 
+    private int hpBricks = 1;
+
     void Start()
     {
-        SpawnBricks(4);
+        SpawnBricks((int)Random.Range(1,6));
+        GameEvents.onDestroyAllBalls.AddListener(OnDestroyAllBalls);
     }
 
-    void Update()
-    {
-        
-    }
-
-    void SpawnBricks(int count)
+    private void SpawnBricks(int count)
     {
         List<Vector2> listPlaces = PlaceForSpawn();
 
@@ -32,12 +30,14 @@ public class GameplayController : MonoBehaviour
 
         for (int i = 0; i < count; i++)
         {
-            Instantiate(brick, listPlaces[i], Quaternion.identity);
+            GameObject newBrick = Instantiate(brick, listPlaces[i], Quaternion.identity);
+            newBrick.GetComponent<Brick>().setHP(hpBricks);
         }
-        
+
+        hpBricks++;        
     }
 
-    List<Vector2> PlaceForSpawn()
+    private List<Vector2> PlaceForSpawn()
     {
         List<Vector2> coordSpawnBricks = new List<Vector2>();
 
@@ -68,5 +68,10 @@ public class GameplayController : MonoBehaviour
         }
 
         return coordSpawnBricks;
+    }
+
+    private void OnDestroyAllBalls()
+    {
+        SpawnBricks((int)Random.Range(1, 6));
     }
 }

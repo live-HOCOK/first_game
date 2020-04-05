@@ -12,7 +12,8 @@ public class Bullet : MonoBehaviour
     private float top;
     private float bottom;
     private Vector2 force;
-    private bool onScreen = true;
+    private bool onScreenY = true;
+    private bool onScreenX = true;
 
     void Start()
     {
@@ -32,56 +33,55 @@ public class Bullet : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         GameObject hitObject = collision.gameObject;
-        Debug.Log(hitObject.tag);
-        //if (hitObject.CompareTag("Brick")) {
-            Vector2 brickCoord = hitObject.transform.position;
+        Vector2 brickCoord = hitObject.transform.position;
 
-            //coord of border point
-            float width = hitObject.GetComponent<SpriteRenderer>().bounds.extents.x;
-            float height = hitObject.GetComponent<SpriteRenderer>().bounds.extents.y;
-            Vector2 topLeft = new Vector2(brickCoord.x - width, brickCoord.y + height);
-            Vector2 topRight = new Vector2(brickCoord.x + width, brickCoord.y + height);
-            Vector2 bottomLeft = new Vector2(brickCoord.x - width, brickCoord.y - height);
-            Vector2 bottomRight = new Vector2(brickCoord.x + width, brickCoord.y - height);
+        //coord borders of collision
+        float width = hitObject.GetComponent<SpriteRenderer>().bounds.extents.x;
+        float height = hitObject.GetComponent<SpriteRenderer>().bounds.extents.y;
+        Vector2 topLeft = new Vector2(brickCoord.x - width, brickCoord.y + height);
+        Vector2 topRight = new Vector2(brickCoord.x + width, brickCoord.y + height);
+        Vector2 bottomLeft = new Vector2(brickCoord.x - width, brickCoord.y - height);
+        Vector2 bottomRight = new Vector2(brickCoord.x + width, brickCoord.y - height);
 
-            if (transform.position.x > bottomLeft.x && transform.position.x < bottomRight.x)
-                ReverseY();
-            else if (transform.position.y > bottomLeft.y && transform.position.y < topLeft.y)
-                ReverseX();
-        //}
+        if (transform.position.x > bottomLeft.x && transform.position.x < bottomRight.x)
+            ReverseY();
+        else if (transform.position.y > bottomLeft.y && transform.position.y < topLeft.y)
+            ReverseX();
     }
 
-    void MoveBullet()
+    private void MoveBullet()
     {
         rb.velocity = force;
-        if ((transform.position.x >= right || transform.position.x <= left) && onScreen)
+        if ((transform.position.x >= right || transform.position.x <= left) && onScreenX)
             ReverseX();
-        else if (transform.position.y >= top && onScreen)
+        else if (transform.position.y >= top && onScreenY)
             ReverseY();
         else if (transform.position.y <= bottom)
             DestroyBullet();
-        else
-            onScreen = true;
+        if (transform.position.x < right && transform.position.x > left)
+            onScreenX = true;
+        if (transform.position.y < top)
+            onScreenY = true;
     }
 
     void DestroyBullet()
     {
+        if (GameObject.FindGameObjectsWithTag("Ball").Length == 1)
+            GameEvents.onDestroyAllBalls.Invoke();
         Destroy(gameObject);
     }
 
     void ReverseX()
     {
-        onScreen = false;
+        onScreenX = false;
         force.x = -force.x;
         rb.velocity = new Vector2(-rb.velocity.x, rb.velocity.y);
-        Debug.Log("x");
     }
 
     void ReverseY()
     {
-        onScreen = false;
+        onScreenY = false;
         force.y = -force.y;
         rb.velocity = new Vector2(rb.velocity.x, -rb.velocity.y);
-        Debug.Log("y");
     }
 }
