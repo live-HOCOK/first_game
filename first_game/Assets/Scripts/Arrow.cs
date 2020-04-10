@@ -13,6 +13,7 @@ public class Arrow : MonoBehaviour
     private int countBallsOnShoot;
     private bool readyShoot = true;
     private bool canAim = true;
+    private GameObject cameraObj;
 
     void Start()
     {
@@ -20,9 +21,10 @@ public class Arrow : MonoBehaviour
         startPosition.z = 0f;
         transform.position = startPosition;
         countBallsOnShoot = countBalls;
+
+        cameraObj = GameObject.FindGameObjectWithTag("MainCamera");
+
         GameEvents.onDestroyAllBalls.AddListener(OnDestroyAllBalls);
-        GameEvents.onStartShooting.AddListener(OnStartShooting);
-        GameEvents.onStopShooting.AddListener(OnStopShooting);
     }
 
     void Update()
@@ -36,22 +38,23 @@ public class Arrow : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && readyShoot)
         {
-            GameEvents.onStartShooting.Invoke();
+            canAim = false;
             readyShoot = false;
             InstantiateBall();
         }
-        else if (nextShoot < Time.time && countBallsOnShoot > 0 && !readyShoot) {
+        else if (nextShoot < Time.time && countBallsOnShoot > 0 && !readyShoot)
             InstantiateBall();
-        }
     }
 
     private void InstantiateBall()
     {
-        Instantiate(bullet, transform.position, transform.rotation);
+        GameObject ball = Instantiate(bullet, transform.position, transform.rotation);
         nextShoot = Time.time + cooldown;
         countBallsOnShoot--;
         if (countBallsOnShoot <= 0)
-            GameEvents.onStopShooting.Invoke();
+            canAim = true;
+        ball.GetComponent<Bullet>().SetGameplayController(cameraObj);
+        cameraObj.GetComponent<GameplayController>().AddBalls();
     }
 
     private void Aiming()
@@ -71,15 +74,5 @@ public class Arrow : MonoBehaviour
         countBalls++;
         countBallsOnShoot = countBalls;
         readyShoot = true;
-    }
-
-    private void OnStartShooting()
-    {
-        canAim = false;
-    }
-
-    private void OnStopShooting()
-    {
-        canAim = true;
     }
 }
