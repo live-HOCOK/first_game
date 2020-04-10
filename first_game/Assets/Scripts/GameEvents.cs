@@ -9,5 +9,6 @@ public static class GameEvents
     public static UnityEvent onDestroyAllBalls = new UnityEvent();
     public static UnityEvent onStartShooting = new UnityEvent();
     public static UnityEvent onStopShooting = new UnityEvent();
+    public static UnityEvent onBrickTouchingBottom = new UnityEvent();
 
 }
