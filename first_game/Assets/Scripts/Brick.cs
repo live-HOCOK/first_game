@@ -17,7 +17,7 @@ public class Brick : MonoBehaviour
         bottomScreen = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0.01f)).y;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ball"))
         {
