@@ -36,16 +36,16 @@ public class Bullet : MonoBehaviour
         Vector2 brickCoord = hitObject.transform.position;
 
         //coord borders of collision
-        float width = hitObject.GetComponent<SpriteRenderer>().bounds.extents.x;
-        float height = hitObject.GetComponent<SpriteRenderer>().bounds.extents.y;
-        Vector2 topLeft = new Vector2(brickCoord.x - width, brickCoord.y + height);
-        Vector2 topRight = new Vector2(brickCoord.x + width, brickCoord.y + height);
-        Vector2 bottomLeft = new Vector2(brickCoord.x - width, brickCoord.y - height);
-        Vector2 bottomRight = new Vector2(brickCoord.x + width, brickCoord.y - height);
+        float widthBrick = hitObject.GetComponent<SpriteRenderer>().bounds.extents.x;
+        float heightBrick = hitObject.GetComponent<SpriteRenderer>().bounds.extents.y;
+        Vector2 topLeftBrick = new Vector2(brickCoord.x - widthBrick, brickCoord.y + heightBrick);
+        Vector2 topRightBrick = new Vector2(brickCoord.x + widthBrick, brickCoord.y + heightBrick);
+        Vector2 bottomLeftBrick = new Vector2(brickCoord.x - widthBrick, brickCoord.y - heightBrick);
+        Vector2 bottomRightBrick = new Vector2(brickCoord.x + widthBrick, brickCoord.y - heightBrick);
 
-        if (transform.position.x > bottomLeft.x && transform.position.x < bottomRight.x)
+        if (transform.position.x > bottomLeftBrick.x && transform.position.x < bottomRightBrick.x)
             ReverseY();
-        else if (transform.position.y > bottomLeft.y && transform.position.y < topLeft.y)
+        else if (transform.position.y > bottomLeftBrick.y && transform.position.y < topLeftBrick.y)
             ReverseX();
     }
 
