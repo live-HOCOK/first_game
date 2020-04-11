@@ -50,11 +50,18 @@ public class Player : MonoBehaviour
 
     private void InstantiateBall()
     {
-        GameObject ball = Instantiate(bullet, transform.position, transform.rotation);
         nextShoot = Time.time + cooldown;
         countBallsOnShoot--;
-        ball.GetComponent<Bullet>().SetGameplayController(cameraObj);
-        cameraObj.GetComponent<GameplayController>().AddBalls();
+        if (PoolBalls.CountInactive() == 0)
+        {
+            GameObject ball = Instantiate(bullet, transform.position, transform.rotation);
+            ball.GetComponent<Bullet>().SetGameplayController(cameraObj);
+            PoolBalls.Add(ball);
+        }
+        else
+        {
+            GameObject ball = PoolBalls.ActiveNext(startPosition, transform.rotation);
+        }
     }
 
     private void Aiming()
@@ -64,9 +71,10 @@ public class Player : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(transform.position, mousePos);
         if (hit.collider != null)
         {
-            arrow.SetActive(true);
             arrow.GetComponent<LineRenderer>().SetPosition(0, transform.position);
             arrow.GetComponent<LineRenderer>().SetPosition(1, hit.point);
+            arrow.SetActive(true);
+            
         }
 
         if (mousePos != Vector2.zero)
@@ -82,5 +90,7 @@ public class Player : MonoBehaviour
         countBallsOnShoot = countBalls;
         readyShoot = true;
         canAim = true;
+        startPosition = new Vector2(PoolBalls.NextPosition(), startPosition.y);
+        transform.position = startPosition;
     }
 }
