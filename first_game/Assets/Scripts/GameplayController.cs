@@ -13,7 +13,6 @@ public class GameplayController : MonoBehaviour
     private float topBorderSpawn;
     private float widthBrick;
     private int countPlaceForSpawn;
-    private int countBalls = 0;
 
     void Start()
     {
@@ -90,17 +89,5 @@ public class GameplayController : MonoBehaviour
         borders.transform.Find("rightBorder").position = Camera.main.ViewportToWorldPoint(new Vector3(1f, 0.5f));
         borders.transform.Find("topBorder").position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 1f));
         borders.transform.Find("bottomBorder").position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, -0.03f));
-    }
-
-    public void AddBalls()
-    {
-        countBalls++;
-    }
-
-    public void RemoveBalls()
-    {
-        countBalls--;
-        if (countBalls == 0)
-            GameEvents.onDestroyAllBalls.Invoke();
     }
 }

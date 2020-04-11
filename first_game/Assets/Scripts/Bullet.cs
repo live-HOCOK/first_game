@@ -31,12 +31,20 @@ public class Bullet : MonoBehaviour
 
     private void DestroyBullet()
     {
-        cameraObject.GetComponent<GameplayController>().RemoveBalls();
-        Destroy(gameObject);
+        PoolBalls.Inactivate(gameObject);
     }
 
     public void SetGameplayController(GameObject obj)
     {
         cameraObject = obj;
+    }
+
+    public void NewStart(Vector2 pos)
+    {
+        
+        transform.position = pos;
+        //transform.rotation = Quaternion.identity;
+        rb.velocity = force;
+        Debug.Log(force);
     }
 }
