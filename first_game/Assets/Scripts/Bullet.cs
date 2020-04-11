@@ -13,8 +13,7 @@ public class Bullet : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        force = transform.up * speed;
-        rb.velocity = force;
+        SetForce();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -34,17 +33,21 @@ public class Bullet : MonoBehaviour
         PoolBalls.Inactivate(gameObject);
     }
 
+    private void SetForce()
+    {
+        force = transform.up * speed;
+        rb.velocity = force;
+    }
+
     public void SetGameplayController(GameObject obj)
     {
         cameraObject = obj;
     }
 
-    public void NewStart(Vector2 pos)
+    public void NewStart(Vector2 pos, Quaternion rotation)
     {
-        
         transform.position = pos;
-        //transform.rotation = Quaternion.identity;
-        rb.velocity = force;
-        Debug.Log(force);
+        transform.rotation = rotation;
+        SetForce();
     }
 }

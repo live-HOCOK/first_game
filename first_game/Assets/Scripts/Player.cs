@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            GameObject ball = PoolBalls.ActiveNext(startPosition);
+            GameObject ball = PoolBalls.ActiveNext(startPosition, transform.rotation);
         }
     }
 
@@ -90,5 +90,7 @@ public class Player : MonoBehaviour
         countBallsOnShoot = countBalls;
         readyShoot = true;
         canAim = true;
+        startPosition = new Vector2(PoolBalls.NextPosition(), startPosition.y);
+        transform.position = startPosition;
     }
 }

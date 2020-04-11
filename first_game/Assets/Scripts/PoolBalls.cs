@@ -17,7 +17,7 @@ public class PoolBalls : MonoBehaviour
         pool.Remove(obj);
     }
 
-    public void SetActive(bool active, GameObject obj)
+    public static void SetActive(bool active, GameObject obj)
     {
         pool[pool.IndexOf(obj)].SetActive(active);
     }
@@ -31,7 +31,7 @@ public class PoolBalls : MonoBehaviour
             GameEvents.onDestroyAllBalls.Invoke();
     }
 
-    public static GameObject ActiveNext(Vector2 startCoord)
+    public static GameObject ActiveNext(Vector2 startCoord, Quaternion rotation)
     {
         if (pool.Count > 0)
         {
@@ -39,8 +39,8 @@ public class PoolBalls : MonoBehaviour
             {
                 if (obj.activeSelf == false)
                 {
-                    obj.GetComponent<Bullet>().NewStart(startCoord);
                     obj.SetActive(true);
+                    obj.GetComponent<Bullet>().NewStart(startCoord, rotation);
                     return obj;
                 }
             }
@@ -94,4 +94,41 @@ public class PoolBalls : MonoBehaviour
         }
     }
 
+    public static float NextPosition()
+    {
+        
+        float[] poolCoord = new float[pool.Count];
+
+        int temp = 0;
+        foreach (GameObject obj in pool) //fill array of coord
+        {
+            poolCoord[temp] = ((float)(decimal.Round(System.Convert.ToDecimal(obj.transform.position.x), 2)));
+            temp++;
+        }
+
+        int[] count = new int[poolCoord.Length]; //array containing counted matches 
+
+        for (int i = 0; i < poolCoord.Length; i++) //find matches
+        {
+            for (int ii = 0; ii < poolCoord.Length; ii++)
+            {
+                if (poolCoord[i] == poolCoord[ii])
+                    count[i]++;
+            }
+        }
+
+        return poolCoord[IndexMaxInArray(count)];
+    }
+
+    private static int IndexMaxInArray(int[] array) //find index max value in array
+    {
+        int max = 0;
+        foreach (int i in array)
+            if (i > max)
+                max = i;
+        for (int i = 0; i < array.Length; i++)
+            if (array[i] == max)
+                return i;
+        return 0;
+    }
 }
