@@ -423,6 +423,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   brick: {fileID: 8250167780320093359, guid: cc125e6b92eaf491ca3caf1751287706, type: 3}
   borders: {fileID: 700531488}
+  bullet: {fileID: 6609383930457131418, guid: 4d10d535e3d8c450e88797a3ae3305a1, type: 3}
+  player: {fileID: 1364483126}
+  cooldown: 0.5
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -977,7 +980,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1364483128}
   - component: {fileID: 1364483127}
-  - component: {fileID: 1364483129}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1050,21 +1052,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1364483129
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1364483126}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c3c112c2c4b540209795612bdea37a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bullet: {fileID: 6609383930457131418, guid: 4d10d535e3d8c450e88797a3ae3305a1, type: 3}
-  countBalls: 1
-  cooldown: 0.3
 --- !u!1 &1731429819
 GameObject:
   m_ObjectHideFlags: 0
