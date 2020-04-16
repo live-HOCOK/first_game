@@ -426,6 +426,7 @@ MonoBehaviour:
   bullet: {fileID: 6609383930457131418, guid: 4d10d535e3d8c450e88797a3ae3305a1, type: 3}
   player: {fileID: 1364483126}
   cooldown: 0.5
+  countSpawnBricks: 6
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0

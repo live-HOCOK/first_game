@@ -9,6 +9,7 @@ public class GameplayController : MonoBehaviour
     public GameObject bullet;
     public GameObject player;
     public float cooldown = 0.5f;
+    public int countSpawnBricks = 6;
 
     private int countBalls = 1;
     private int hpBricks = 1;
@@ -46,8 +47,9 @@ public class GameplayController : MonoBehaviour
         }
         else
         {
-            SpawnBricks((int)Random.Range(1, 6));
+            SpawnBricks();
             player.transform.position = Camera.main.ViewportToWorldPoint(new Vector2(0.5f, 0f));
+            player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, 0);
     }
 
     countBallsOnShoot = countBalls;
@@ -64,7 +66,7 @@ public class GameplayController : MonoBehaviour
         Shoot();
     }
 
-    private void SpawnBricks(int count)
+    public void SpawnBricks()
     {
         List<Vector2> listPlaces = PlaceForSpawn();
 
@@ -78,7 +80,7 @@ public class GameplayController : MonoBehaviour
             listPlaces[i] = temp;
         }
 
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < countSpawnBricks; i++)
         {
             GameObject newBrick = Instantiate(brick, listPlaces[i], Quaternion.identity);
             newBrick.GetComponent<Brick>().SetHP(hpBricks);
@@ -167,7 +169,6 @@ public class GameplayController : MonoBehaviour
             arrow.GetComponent<LineRenderer>().SetPosition(0, player.transform.position);
             arrow.GetComponent<LineRenderer>().SetPosition(1, hit.point);
             arrow.SetActive(true);
-
         }
 
         if (mousePos != Vector2.zero)
@@ -179,14 +180,11 @@ public class GameplayController : MonoBehaviour
 
     private void SaveState()
     {
-        
-
         GameObject[] allBricks = GameObject.FindGameObjectsWithTag("Brick");
         List<GameState.BrickState> allBricksState = new List<GameState.BrickState>();
 
         foreach (GameObject obj in allBricks)
         {
-            obj.GetComponent<Brick>().MoveDown();
             allBricksState.Add(new GameState.BrickState(obj));
         }
 
@@ -206,8 +204,8 @@ public class GameplayController : MonoBehaviour
         canAim = true;
         player.transform.position = new Vector2(PoolBalls.NextPosition(), player.transform.position.y);
 
-        SpawnBricks((int)Random.Range(1, 6));
+        Invoke("SpawnBricks", 0.1f);
 
-        SaveState();
+        Invoke("SaveState", 0.2f);
     }
 }
