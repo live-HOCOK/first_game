@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float speed = 0.3f;
+    public float speed;
 
-    private GameObject cameraObject;
     private Rigidbody2D rb;
     private Vector2 force;
 
@@ -37,11 +36,6 @@ public class Bullet : MonoBehaviour
     {
         force = transform.up * speed;
         rb.velocity = force;
-    }
-
-    public void SetGameplayController(GameObject obj)
-    {
-        cameraObject = obj;
     }
 
     public void NewStart(Vector2 pos, Quaternion rotation)

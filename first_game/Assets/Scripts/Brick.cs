@@ -13,8 +13,8 @@ public class Brick : MonoBehaviour
     {
         textCount = GetComponentInChildren<TextMesh>();
         textCount.text = hp.ToString();
-        GameEvents.onDestroyAllBalls.AddListener(OnDestroyAllBalls);
         bottomScreen = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0.01f)).y;
+        GameEvents.onDestroyAllBalls.AddListener(OnDestroyAllBalls);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -22,17 +22,13 @@ public class Brick : MonoBehaviour
         if (collision.gameObject.CompareTag("Ball"))
         {
             hp--;
-            if (hp == 0)
+            if (hp <= 0)
                 Destroy(gameObject);
             else
                 textCount.text = hp.ToString();
         }
     }
 
-    private void OnDestroyAllBalls()
-    {
-        MoveDown();       
-    }
 
     private void MoveDown()
     {
@@ -45,8 +41,18 @@ public class Brick : MonoBehaviour
         }
     }
 
-    public void setHP(int newHP)
+    public void SetHP(int newHP)
     {
         hp = newHP;
+    }
+
+    public int GetHP()
+    {
+        return hp;
+    }
+
+    private void OnDestroyAllBalls()
+    {
+        MoveDown();
     }
 }
