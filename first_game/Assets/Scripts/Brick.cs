@@ -6,33 +6,30 @@ public class Brick : MonoBehaviour
 {
     private int hp = 1;
 
-    private TextMesh textCount;
     private float bottomScreen;
+    private GameplayController gameController;
     
     void Start()
     {
-        textCount = GetComponentInChildren<TextMesh>();
-        textCount.text = hp.ToString();
-        bottomScreen = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0.01f)).y;
+        gameController = Camera.main.GetComponent<GameplayController>();
+        bottomScreen = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0.01f, gameController.GetGameClipPlane())).y;
         GameEvents.onDestroyAllBalls.AddListener(OnDestroyAllBalls);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Ball"))
         {
             hp--;
             if (hp <= 0)
                 Destroy(gameObject);
-            else
-                textCount.text = hp.ToString();
         }
     }
 
 
     private void MoveDown()
     {
-        float heightBrick = GetComponent<SpriteRenderer>().bounds.extents.y * 2;
+        float heightBrick = GetComponent<MeshRenderer>().bounds.extents.y * 2;
         transform.position -= new Vector3(0, heightBrick, 0);
         if (transform.position.y <= bottomScreen)
         {
