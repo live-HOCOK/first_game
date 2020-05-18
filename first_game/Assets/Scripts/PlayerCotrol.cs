@@ -33,6 +33,7 @@ public class PlayerCotrol : MonoBehaviour
         countBallsOnCurrentShoot = countBalls;
 
         GameEvents.onDestroyAllBalls.AddListener(OnDestroyAllBalls);
+        SwipeManager.OnSingleTap += OnTap;
     }
 
     void Update()
@@ -41,7 +42,6 @@ public class PlayerCotrol : MonoBehaviour
             Aiming();
         else if (arrow.enabled == true)
             arrow.enabled = false;
-        Shoot();
     }
 
     private void Aiming()
@@ -64,18 +64,6 @@ public class PlayerCotrol : MonoBehaviour
         }
     }
 
-    private void Shoot()
-    {
-        if (Input.GetButtonUp("Fire1") && canShoot)
-        {
-            InstantiateBall();
-        }
-        else if (!canShoot && countBallsOnCurrentShoot > 0 && timeNextShoot < Time.time)
-        {
-            InstantiateBall();
-        }
-    }
-
     private void InstantiateBall()
     {
         timeNextShoot = Time.time + coolDown;
@@ -94,5 +82,11 @@ public class PlayerCotrol : MonoBehaviour
     private void OnDestroyAllBalls()
     {
 
+    }
+
+    private void OnTap()
+    {
+        if ((canShoot) || (!canShoot && countBallsOnCurrentShoot > 0 && timeNextShoot < Time.time))
+            InstantiateBall();
     }
 }
