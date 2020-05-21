@@ -88,139 +88,168 @@ public class Brick : MonoBehaviour
 
 public static class BrickPosition
 {
-    static Vector3 frontFirst = new Vector3(-3.03f, 0f, -3.03f);
-    static Vector3 frontSecond = new Vector3(-2.02f, 0f, -3.03f);
-    static Vector3 frontThird = new Vector3(-1.01f, 0f, -3.03f);
-    static Vector3 frontFourth = new Vector3(0f, 0f, -3.03f);
-    static Vector3 frontFifth = new Vector3(1.01f, 0f, -3.03f);
-    static Vector3 frontSixth = new Vector3(2.02f, 0f, -3.03f);
-    static Vector3 leftFirst = new Vector3(-3.03f, 0f, 3.03f);
-    static Vector3 leftSecond = new Vector3(-3.03f, 0f, 2.02f);
-    static Vector3 leftThird = new Vector3(-3.03f, 0f, 1.01f);
-    static Vector3 leftFourth = new Vector3(-3.03f, 0f, 0f);
-    static Vector3 leftFifth = new Vector3(-3.03f, 0f, -1.01f);
-    static Vector3 leftSixth = new Vector3(-3.03f, 0f, -2.02f);
-    static Vector3 backFirst = new Vector3(3.03f, 0f, 3.03f);
-    static Vector3 backSecond = new Vector3(2.02f, 0f, 3.03f);
-    static Vector3 backThird = new Vector3(1.01f, 0f, 3.03f);
-    static Vector3 backFourth = new Vector3(0f, 0f, 3.03f);
-    static Vector3 backFifth = new Vector3(-1.01f, 0f, 3.03f);
-    static Vector3 backSixth = new Vector3(-2.02f, 0f, 3.03f);
-    static Vector3 rightFirst = new Vector3(3.03f, 0f, -3.03f);
-    static Vector3 rightSecond = new Vector3(3.03f, 0f, -2.02f);
-    static Vector3 rightThird = new Vector3(3.03f, 0f, -1.01f);
-    static Vector3 rightFourth = new Vector3(3.03f, 0f, 0f);
-    static Vector3 rightFifth = new Vector3(3.03f, 0f, 1.01f);
-    static Vector3 rightSixth = new Vector3(3.03f, 0f, 2.02f);
+    static readonly Dictionary<int, Vector3> front = new Dictionary<int, Vector3>
+    {
+        [1] = new Vector3(-3.03f, 5.5f, -3.03f),
+        [2] = new Vector3(-2.02f, 5.5f, -3.03f),
+        [3] = new Vector3(-1.01f, 5.5f, -3.03f),
+        [4] = new Vector3(0f, 5.5f, -3.03f),
+        [5] = new Vector3(1.01f, 5.5f, -3.03f),
+        [6] = new Vector3(2.02f, 5.5f, -3.03f)
+    };
+    static readonly Dictionary<int, Vector3> left = new Dictionary<int, Vector3>
+    {
+        [1] = new Vector3(-3.03f, 5.5f, 3.03f),
+        [2] = new Vector3(-3.03f, 5.5f, 2.02f),
+        [3] = new Vector3(-3.03f, 5.5f, 1.01f),
+        [4] = new Vector3(-3.03f, 5.5f, 0f),
+        [5] = new Vector3(-3.03f, 5.5f, -1.01f),
+        [6] = new Vector3(-3.03f, 5.5f, -2.02f)
+    };
+    static readonly Dictionary<int, Vector3> back = new Dictionary<int, Vector3>
+    {
+        [1] = new Vector3(3.03f, 5.5f, 3.03f),
+        [2] = new Vector3(2.02f, 5.5f, 3.03f),
+        [3] = new Vector3(1.01f, 5.5f, 3.03f),
+        [4] = new Vector3(0f, 5.5f, 3.03f),
+        [5] = new Vector3(-1.01f, 5.5f, 3.03f),
+        [6] = new Vector3(-2.02f, 5.5f, 3.03f)
+    };
+    static readonly Dictionary<int, Vector3> right = new Dictionary<int, Vector3>
+    {
+        [1] = new Vector3(3.03f, 5.5f, -3.03f),
+        [2] = new Vector3(3.03f, 5.5f, -2.02f),
+        [3] = new Vector3(3.03f, 5.5f, -1.01f),
+        [4] = new Vector3(3.03f, 5.5f, 0f),
+        [5] = new Vector3(3.03f, 5.5f, 1.01f),
+        [6] = new Vector3(3.03f, 5.5f, 2.02f)
+    };
 
     static public Vector3 GetPositionOnRightSwipe(Vector3 pos)
     {
-        if (IsEqualsPosition(pos, frontFirst))
-            return leftFirst;
-        else if (IsEqualsPosition(pos, frontSecond))
-            return leftSecond;
-        else if (IsEqualsPosition(pos, frontThird))
-            return leftThird;
-        else if (IsEqualsPosition(pos, frontFourth))
-            return leftFourth;
-        else if (IsEqualsPosition(pos, frontFifth))
-            return leftFifth;
-        else if (IsEqualsPosition(pos, frontSixth))
-            return leftSixth;
-        else if (IsEqualsPosition(pos, leftFirst))
-            return backFirst;
-        else if (IsEqualsPosition(pos, leftSecond))
-            return backSecond;
-        else if (IsEqualsPosition(pos, leftThird))
-            return backThird;
-        else if (IsEqualsPosition(pos, leftFourth))
-            return backFourth;
-        else if (IsEqualsPosition(pos, leftFifth))
-            return backFifth;
-        else if (IsEqualsPosition(pos, leftSixth))
-            return backSixth;
-        else if (IsEqualsPosition(pos, backFirst))
-            return rightFirst;
-        else if (IsEqualsPosition(pos, backSecond))
-            return rightSecond;
-        else if (IsEqualsPosition(pos, backThird))
-            return rightThird;
-        else if (IsEqualsPosition(pos, backFourth))
-            return rightFourth;
-        else if (IsEqualsPosition(pos, backFifth))
-            return rightFifth;
-        else if (IsEqualsPosition(pos, backSixth))
-            return rightSixth;
-        else if (IsEqualsPosition(pos, rightFirst))
-            return frontFirst;
-        else if (IsEqualsPosition(pos, rightSecond))
-            return frontSecond;
-        else if (IsEqualsPosition(pos, rightThird))
-            return frontThird;
-        else if (IsEqualsPosition(pos, rightFourth))
-            return frontFourth;
-        else if (IsEqualsPosition(pos, rightFifth))
-            return frontFifth;
-        else if (IsEqualsPosition(pos, rightSixth))
-            return frontSixth;
+        if (IsEqualsPosition(pos, front[1]))
+            return left[1];
+        else if (IsEqualsPosition(pos, front[2]))
+            return left[2];
+        else if (IsEqualsPosition(pos, front[3]))
+            return left[3];
+        else if (IsEqualsPosition(pos, front[4]))
+            return left[4];
+        else if (IsEqualsPosition(pos, front[5]))
+            return left[5];
+        else if (IsEqualsPosition(pos, front[6]))
+            return left[6];
+        else if (IsEqualsPosition(pos, left[1]))
+            return back[1];
+        else if (IsEqualsPosition(pos, left[2]))
+            return back[2];
+        else if (IsEqualsPosition(pos, left[3]))
+            return back[3];
+        else if (IsEqualsPosition(pos, left[4]))
+            return back[4];
+        else if (IsEqualsPosition(pos, left[5]))
+            return back[5];
+        else if (IsEqualsPosition(pos, left[6]))
+            return back[6];
+        else if (IsEqualsPosition(pos, back[1]))
+            return right[1];
+        else if (IsEqualsPosition(pos, back[2]))
+            return right[2];
+        else if (IsEqualsPosition(pos, back[3]))
+            return right[3];
+        else if (IsEqualsPosition(pos, back[4]))
+            return right[4];
+        else if (IsEqualsPosition(pos, back[5]))
+            return right[5];
+        else if (IsEqualsPosition(pos, back[6]))
+            return right[6];
+        else if (IsEqualsPosition(pos, right[1]))
+            return front[1];
+        else if (IsEqualsPosition(pos, right[2]))
+            return front[2];
+        else if (IsEqualsPosition(pos, right[3]))
+            return front[3];
+        else if (IsEqualsPosition(pos, right[4]))
+            return front[4];
+        else if (IsEqualsPosition(pos, right[5]))
+            return front[5];
+        else if (IsEqualsPosition(pos, right[6]))
+            return front[6];
         return Vector3.zero;
     }
 
     static public Vector3 GetPositionOnLeftSwipe(Vector3 pos)
     {
-        if (IsEqualsPosition(pos, frontFirst))
-            return rightFirst;
-        else if (IsEqualsPosition(pos, frontSecond))
-            return rightSecond;
-        else if (IsEqualsPosition(pos, frontThird))
-            return rightThird;
-        else if (IsEqualsPosition(pos, frontFourth))
-            return rightFourth;
-        else if (IsEqualsPosition(pos, frontFifth))
-            return rightFifth;
-        else if (IsEqualsPosition(pos, frontSixth))
-            return rightSixth;
-        else if (IsEqualsPosition(pos, rightFirst))
-            return backFirst;
-        else if (IsEqualsPosition(pos, rightSecond))
-            return backSecond;
-        else if (IsEqualsPosition(pos, rightThird))
-            return backThird;
-        else if (IsEqualsPosition(pos, rightFourth))
-            return backFourth;
-        else if (IsEqualsPosition(pos, rightFifth))
-            return backFifth;
-        else if (IsEqualsPosition(pos, rightSixth))
-            return backSixth;
-        else if (IsEqualsPosition(pos, backFirst))
-            return leftFirst;
-        else if (IsEqualsPosition(pos, backSecond))
-            return leftSecond;
-        else if (IsEqualsPosition(pos, backThird))
-            return leftThird;
-        else if (IsEqualsPosition(pos, backFourth))
-            return leftFourth;
-        else if (IsEqualsPosition(pos, backFifth))
-            return leftFifth;
-        else if (IsEqualsPosition(pos, backSixth))
-            return leftSixth;
-        else if (IsEqualsPosition(pos, leftFirst))
-            return frontFirst;
-        else if (IsEqualsPosition(pos, leftSecond))
-            return frontSecond;
-        else if (IsEqualsPosition(pos, leftThird))
-            return frontThird;
-        else if (IsEqualsPosition(pos, leftFourth))
-            return frontFourth;
-        else if (IsEqualsPosition(pos, leftFifth))
-            return frontFifth;
-        else if (IsEqualsPosition(pos, leftSixth))
-            return frontSixth;
+        if (IsEqualsPosition(pos, front[1]))
+            return right[1];
+        else if (IsEqualsPosition(pos, front[2]))
+            return right[2];
+        else if (IsEqualsPosition(pos, front[3]))
+            return right[3];
+        else if (IsEqualsPosition(pos, front[4]))
+            return right[4];
+        else if (IsEqualsPosition(pos, front[5]))
+            return right[5];
+        else if (IsEqualsPosition(pos, front[6]))
+            return right[6];
+        else if (IsEqualsPosition(pos, right[1]))
+            return back[1];
+        else if (IsEqualsPosition(pos, right[2]))
+            return back[2];
+        else if (IsEqualsPosition(pos, right[3]))
+            return back[3];
+        else if (IsEqualsPosition(pos, right[4]))
+            return back[4];
+        else if (IsEqualsPosition(pos, right[5]))
+            return back[5];
+        else if (IsEqualsPosition(pos, right[6]))
+            return back[6];
+        else if (IsEqualsPosition(pos, back[1]))
+            return left[1];
+        else if (IsEqualsPosition(pos, back[2]))
+            return left[2];
+        else if (IsEqualsPosition(pos, back[3]))
+            return left[3];
+        else if (IsEqualsPosition(pos, back[4]))
+            return left[4];
+        else if (IsEqualsPosition(pos, back[5]))
+            return left[5];
+        else if (IsEqualsPosition(pos, back[6]))
+            return left[6];
+        else if (IsEqualsPosition(pos, left[1]))
+            return front[1];
+        else if (IsEqualsPosition(pos, left[2]))
+            return front[2];
+        else if (IsEqualsPosition(pos, left[3]))
+            return front[3];
+        else if (IsEqualsPosition(pos, left[4]))
+            return front[4];
+        else if (IsEqualsPosition(pos, left[5]))
+            return front[5];
+        else if (IsEqualsPosition(pos, left[6]))
+            return front[6];
         return Vector3.zero;
     }
 
     static public bool IsEqualsPosition(Vector3 pos1, Vector3 pos2)
     {
         return (pos1.x == pos2.x && pos1.z == pos2.z);
+    }
+
+    static public Vector3 GetBrickCoord(int side, int position)
+    {
+        switch (side)
+        {
+            case Constants.FRONT_SIDE:
+                return front[position];
+            case Constants.LEFT_SIDE:
+                return left[position];
+            case Constants.BACK_SIDE:
+                return back[position];
+            case Constants.RIGHT_SIDE:
+                return right[position];
+            default:
+                return Vector3.zero;
+        }
     }
 }

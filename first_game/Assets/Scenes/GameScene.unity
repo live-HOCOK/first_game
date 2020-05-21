@@ -722,6 +722,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   borders: {fileID: 700531488}
+  brick: {fileID: 9112384409058409531, guid: cc125e6b92eaf491ca3caf1751287706, type: 3}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
