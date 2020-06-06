@@ -29,8 +29,11 @@ public class SwipeEvents : MonoBehaviour
 
     void Update()
     {
-        PreventMultipleTriggersSimultaneously();
-        SwipeInputs();
+        if (Time.timeScale > 0)
+        {
+            PreventMultipleTriggersSimultaneously();
+            SwipeInputs();
+        }
     }
 
     #endregion

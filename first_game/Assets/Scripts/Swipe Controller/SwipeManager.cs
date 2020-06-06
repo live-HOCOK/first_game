@@ -71,20 +71,23 @@ public class SwipeManager : MonoBehaviour
         //! Setting all bool triggers to false every frame to prevent them from being called several times
         swipeUp = swipeRight = swipeDown = swipeLeft = false;
 
-        //This prevents clicks and touches through UI
-        if ((EventSystem.current.IsPointerOverGameObject() || EventSystem.current.currentSelectedGameObject != null)
-        && preventClicksThroughUI)
+        if (Time.timeScale > 0) //live_HOCOK
         {
-            return;
-        }
+            //This prevents clicks and touches through UI
+            if ((EventSystem.current.IsPointerOverGameObject() || EventSystem.current.currentSelectedGameObject != null)
+            && preventClicksThroughUI)
+            {
+                return;
+            }
 
-        if (Input.touchSupported)
-        {
-            DetectAndTriggerSwipeForTouchInput();
-        }
-        else
-        {
-            DetectAndTriggerSwipeForMouseInput();
+            if (Input.touchSupported)
+            {
+                DetectAndTriggerSwipeForTouchInput();
+            }
+            else
+            {
+                DetectAndTriggerSwipeForMouseInput();
+            }
         }
     }
 

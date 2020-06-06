@@ -38,34 +38,38 @@ public class PlayerCotrol : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButton("Fire1"))
+        if (Input.GetButton("Fire1") && Time.timeScale > 0 && canShoot)
             Aiming();
         else if (arrow.enabled == true)
             arrow.enabled = false;
+        if (!canShoot && countBallsOnCurrentShoot > 0 && timeNextShoot < Time.time)
+            InstantiateBall();
     }
 
     private void Aiming()
     {
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3 (Input.mousePosition.x, Input.mousePosition.y, gameController.GetGameClipPlane())) - transform.position;
 
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.up, out hit))
-        {
-            if (arrow.enabled == false)
-                arrow.enabled = true;
-            GetComponent<LineRenderer>().SetPosition(0, transform.position);
-            GetComponent<LineRenderer>().SetPosition(1, hit.point);
-        }
-
         if (mousePos != Vector3.zero)
         {
             float angle = Mathf.Atan2(-mousePos.x, mousePos.y) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
+
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.up, out hit))
+        {
+            GetComponent<LineRenderer>().SetPosition(0, transform.position);
+            GetComponent<LineRenderer>().SetPosition(1, hit.point);
+            if (arrow.enabled == false)
+                arrow.enabled = true;
+        }
+        
     }
 
     private void InstantiateBall()
     {
+        canShoot = false;
         timeNextShoot = Time.time + coolDown;
         countBallsOnCurrentShoot--;
         if (PoolBalls.CountInactive() == 0)
@@ -79,14 +83,21 @@ public class PlayerCotrol : MonoBehaviour
         }
     }
 
+    public int GetCountBalls() { return countBalls; }
+
+    public bool GetCanShoot() { return canShoot; }
+
     private void OnDestroyAllBalls()
     {
-
+        transform.position = new Vector3(PoolBalls.NextPosition(), transform.position.y, transform.position.z);
+        countBalls++;
+        countBallsOnCurrentShoot = countBalls;
+        canShoot = true;
     }
 
     private void OnTap()
     {
-        if ((canShoot) || (!canShoot && countBallsOnCurrentShoot > 0 && timeNextShoot < Time.time))
+        if (canShoot)
             InstantiateBall();
     }
 }

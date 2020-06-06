@@ -5,7 +5,6 @@ using UnityEngine;
 public class GUIController : MonoBehaviour
 {
     public GameObject losing_message;
-    public GameObject player;
 
     private void Start()
     {
@@ -15,12 +14,11 @@ public class GUIController : MonoBehaviour
     private void OnBrickTouchingBottom()
     {
         losing_message.gameObject.SetActive(true);
-        player.SetActive(false);
     }
 
     public void OnClickLosingMessageBack()
     {
         losing_message.SetActive(false);
-        player.SetActive(true);
+        GameEvents.onClickLoosingMessage.Invoke();
     }
 }
