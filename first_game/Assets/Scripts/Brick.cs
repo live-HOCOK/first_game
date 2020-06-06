@@ -61,11 +61,7 @@ public class Brick : MonoBehaviour
     {
         if (hp < maxHP && hp > 0)
         {
-            Debug.Log("hp - " + hp);
-            Debug.Log("max - " + maxHP);
             float percentHP = (float)hp / (float)maxHP;
-            Debug.Log("percent - " + percentHP);
-            Debug.Log("color - " + (1 - percentHP));
             gameObject.GetComponent<MeshRenderer>().material.color = new Color(1, 0 + percentHP, 0 + percentHP, 1);
         }
     }

@@ -41,7 +41,7 @@ public static class BrickPosition
         [6] = new Vector3(3.03f, 5.5f, 2.02f)
     };
 
-    static public Vector3 GetPositionOnRightSwipe(Vector3 pos)
+    static public Vector3 GetPositionOnLeftSwipe(Vector3 pos)
     {
         if (IsEqualsPosition(pos, front[1]))
             return left[1];
@@ -94,7 +94,7 @@ public static class BrickPosition
         return Vector3.zero;
     }
 
-    static public Vector3 GetPositionOnLeftSwipe(Vector3 pos)
+    static public Vector3 GetPositionOnRightSwipe(Vector3 pos)
     {
         if (IsEqualsPosition(pos, front[1]))
             return right[1];
