@@ -5,34 +5,50 @@ using UnityEngine;
 public class Brick : MonoBehaviour
 {
     private int hp = 1;
+    private int maxHP = 1;
 
-    private TextMesh textCount;
     private float bottomScreen;
-    
+    private GameplayController gameController;
+    private Vector3 newPosition;
+    private bool move = false;
+    private float heightBrick;
+    private GameObject player;
+
     void Start()
     {
-        textCount = GetComponentInChildren<TextMesh>();
-        textCount.text = hp.ToString();
-        bottomScreen = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0.01f)).y;
+        gameController = Camera.main.GetComponent<GameplayController>();
+        bottomScreen = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0.01f, gameController.GetGameClipPlane())).y;
+        heightBrick = GetComponent<MeshRenderer>().bounds.extents.y * 2;
+        player = GameObject.FindGameObjectWithTag("Player");
+
         GameEvents.onDestroyAllBalls.AddListener(OnDestroyAllBalls);
+        SwipeEvents.OnSwipeRight += OnSwipeRight;
+        SwipeEvents.OnSwipeLeft += OnSwipeLeft;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void FixedUpdate()
+    {
+        if (move)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(newPosition.x, transform.position.y, newPosition.z), 0.1f);
+            if (BrickPosition.IsEqualsPosition(newPosition, transform.position))
+                move = false;
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Ball"))
         {
             hp--;
+            changeColor();
             if (hp <= 0)
                 Destroy(gameObject);
-            else
-                textCount.text = hp.ToString();
         }
     }
 
-
     private void MoveDown()
     {
-        float heightBrick = GetComponent<SpriteRenderer>().bounds.extents.y * 2;
         transform.position -= new Vector3(0, heightBrick, 0);
         if (transform.position.y <= bottomScreen)
         {
@@ -41,18 +57,52 @@ public class Brick : MonoBehaviour
         }
     }
 
-    public void SetHP(int newHP)
+    private void changeColor()
     {
-        hp = newHP;
+        if (hp < maxHP && hp > 0)
+        {
+            float percentHP = (float)hp / (float)maxHP;
+            gameObject.GetComponent<MeshRenderer>().material.color = new Color(1, 0 + percentHP, 0 + percentHP, 1);
+        }
     }
 
-    public int GetHP()
+    public void SetHP(int newHP, int newMaxHP)
     {
-        return hp;
+        hp = newHP;
+        maxHP = newMaxHP;
+        changeColor();
     }
+
+    public int GetHP() { return hp; }
+
+    public int GetMaxHP() { return maxHP; }
 
     private void OnDestroyAllBalls()
     {
         MoveDown();
+    }
+    
+    private void OnSwipeRight()
+    {
+        if (!move && player.GetComponent<PlayerCotrol>().GetCanShoot())
+        {
+            move = true;
+            newPosition = BrickPosition.GetPositionOnRightSwipe(transform.position);
+        }
+    }
+
+    private void OnSwipeLeft()
+    {
+        if (!move && player.GetComponent<PlayerCotrol>().GetCanShoot())
+        {
+            move = true;
+            newPosition = BrickPosition.GetPositionOnLeftSwipe(transform.position);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        SwipeEvents.OnSwipeRight -= OnSwipeRight;
+        SwipeEvents.OnSwipeLeft -= OnSwipeLeft;
     }
 }
