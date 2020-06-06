@@ -6,7 +6,7 @@ using UnityEngine;
 public static class GameState
 {
     private static List<BrickState> savedBricks = new List<BrickState>();
-    private static Vec2 startPosition = new Vec2();
+    private static Vec3 shootPosition = new Vec3();
     private static int countBalls;
     private static int hpNewBricks;
 
@@ -45,20 +45,48 @@ public static class GameState
     }
 
     [System.Serializable]
+    public struct Vec3
+    {
+        public float x, y, z;
+
+        public Vec3(float x, float y, float z)
+        {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+
+        public Vec3(Vector3 vec3)
+        {
+            x = vec3.x;
+            y = vec3.y;
+            z = vec3.z;
+        }
+
+        public Vector3 ToVector3()
+        {
+            return new Vector3(x, y, z);
+        }
+    }
+
+    [System.Serializable]
     public struct BrickState
     {
-        public Vec2 position;
+        public Vec3 position;
         public int hp;
+        public int maxHP;
 
-        public BrickState(int hp, Vec2 position)
+        public BrickState(int hp, int maxHP, Vec3 position)
         {
             this.hp = hp;
+            this.maxHP = maxHP;
             this.position = position;
         }
         public BrickState(GameObject go)
         {
             hp = go.GetComponent<Brick>().GetHP();
-            position = new Vec2(go.transform.position);
+            maxHP = go.GetComponent<Brick>().GetMaxHP();
+            position = new Vec3(go.transform.position);
         }
     }
 
@@ -66,11 +94,11 @@ public static class GameState
     public struct AllState
     {
         public List<BrickState> listBricks;
-        public Vec2 posPlayer;
+        public Vec3 posPlayer;
         public int countBalls;
         public int hpNewBricks;
 
-        public AllState(List<BrickState> listBricks, Vec2 posPlayer, int countBalls, int hpNewBricks)
+        public AllState(List<BrickState> listBricks, Vec3 posPlayer, int countBalls, int hpNewBricks)
         {
             this.listBricks = listBricks;
             this.posPlayer = posPlayer;
@@ -82,7 +110,6 @@ public static class GameState
     public static void ClearState()
     {
         savedBricks.Clear();
-        startPosition = new Vec2(0, 0);
     }
 
     public static void SaveStateBrick(GameObject brick)
@@ -99,14 +126,14 @@ public static class GameState
         savedBricks = listBricks;
     }
 
-    public static void SavePosition(Vector2 pos)
+    public static void SavePosition(Vector3 pos)
     {
-        startPosition = new Vec2(pos);
+        shootPosition = new Vec3(pos);
     }
 
-    public static Vec2 GetSavedPosition()
+    public static Vec3 GetSavedPosition()
     {
-        return startPosition;
+        return shootPosition;
     }
 
     public static void SaveCountBalls(int count)
@@ -132,13 +159,13 @@ public static class GameState
     public static void LoadState(AllState state)
     {
         savedBricks = state.listBricks;
-        startPosition = state.posPlayer;
+        shootPosition = state.posPlayer;
         countBalls = state.countBalls;
         hpNewBricks = state.hpNewBricks;
     }
 
     public static AllState SaveState()
     {
-        return new AllState(savedBricks, startPosition, countBalls, hpNewBricks);
+        return new AllState(savedBricks, shootPosition, countBalls, hpNewBricks);
     }
 }

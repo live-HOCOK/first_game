@@ -6,22 +6,22 @@ public class Bullet : MonoBehaviour
 {
     public float speed;
 
-    private Rigidbody2D rb;
+    private Rigidbody rb;
     private Vector2 force;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody>();
         SetForce();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.CompareTag("CollisionBorder"))
             DestroyBullet();
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnCollisionExit(Collision collision)
     {
         rb.velocity = new Vector2((Mathf.Sign(rb.velocity.x) == Mathf.Sign(force.x)) ? force.x : -force.x,
             (Mathf.Sign(rb.velocity.y) == Mathf.Sign(force.y)) ? force.y : -force.y);
@@ -38,7 +38,7 @@ public class Bullet : MonoBehaviour
         rb.velocity = force;
     }
 
-    public void NewStart(Vector2 pos, Quaternion rotation)
+    public void NewStart(Vector3 pos, Quaternion rotation)
     {
         transform.position = pos;
         transform.rotation = rotation;

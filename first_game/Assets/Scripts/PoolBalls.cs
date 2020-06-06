@@ -24,14 +24,16 @@ public class PoolBalls : MonoBehaviour
 
     public static void Inactivate(GameObject obj)
     {
+        if (pool.Count == 0)
+            Add(obj);
         int index = pool.IndexOf(obj);
-        pool[index].GetComponent<Rigidbody2D>().velocity = Vector3.zero;
+        pool[index].GetComponent<Rigidbody>().velocity = Vector3.zero;
         pool[index].SetActive(false);
         if (CountActive() == 0)
             GameEvents.onDestroyAllBalls.Invoke();
     }
 
-    public static GameObject ActiveNext(Vector2 startCoord, Quaternion rotation)
+    public static GameObject ActiveNext(Vector3 startCoord, Quaternion rotation)
     {
         if (pool.Count > 0)
         {
