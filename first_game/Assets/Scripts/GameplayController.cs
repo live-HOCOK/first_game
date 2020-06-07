@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class GameplayController : MonoBehaviour
 {
-    public GameObject borders;
     public GameObject brick;
     public int CountNewBricks = 8;
+    public GameObject leftBorder;
+    public GameObject rightBorder;
+    public GameObject topBorder;
+    public GameObject bottomBorder;
 
     private float gameClipPlane;
     private int hpBricks = 1;
@@ -38,7 +41,10 @@ public class GameplayController : MonoBehaviour
 
     private void SetBorders()
     {
-        borders.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, gameClipPlane));
+        leftBorder.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0.5f, gameClipPlane));
+        rightBorder.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(1f, 0.5f, gameClipPlane));
+        topBorder.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 1f, gameClipPlane));
+        bottomBorder.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, -0.05f, gameClipPlane));
     }
 
     private void LoadBricks()
