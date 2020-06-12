@@ -21,6 +21,8 @@ public class Brick : MonoBehaviour
         heightBrick = GetComponent<MeshRenderer>().bounds.extents.y * 2;
         player = GameObject.FindGameObjectWithTag("Player");
 
+        transform.rotation = Quaternion.Euler(0, GetRandomAngle(), 0);
+
         GameEvents.onDestroyAllBalls.AddListener(OnDestroyAllBalls);
         SwipeEvents.OnSwipeRight += OnSwipeRight;
         SwipeEvents.OnSwipeLeft += OnSwipeLeft;
@@ -33,6 +35,28 @@ public class Brick : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(newPosition.x, transform.position.y, newPosition.z), 0.1f);
             if (BrickPosition.IsEqualsPosition(newPosition, transform.position))
                 move = false;
+        }
+    }
+
+    private int GetRandomAngle()
+    {
+        int rnd = Random.Range(0, 3);
+
+        int result = 0;
+
+        switch (rnd)
+        {
+            case 0:
+                result = 180;
+                return result;
+            case 1:
+                result = 90;
+                return result;
+            case 2:
+                result = -90;
+                return result;
+            default:
+                return result;
         }
     }
 
