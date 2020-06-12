@@ -16,7 +16,7 @@ public class GameplayController : MonoBehaviour
 
     private void Awake()
     {
-        gameClipPlane = Camera.main.nearClipPlane + 1f;
+        gameClipPlane = Camera.main.nearClipPlane + 2f;
         SaveLoad.LoadGame();
     }
 
