@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class GameplayController : MonoBehaviour
 {
-    public GameObject borders;
     public GameObject brick;
     public int CountNewBricks = 8;
+    public GameObject leftBorder;
+    public GameObject rightBorder;
+    public GameObject topBorder;
+    public GameObject bottomBorder;
 
     private float gameClipPlane;
     private int hpBricks = 1;
 
     private void Awake()
     {
-        gameClipPlane = Camera.main.nearClipPlane + 1f;
+        gameClipPlane = Camera.main.nearClipPlane + 2f;
         SaveLoad.LoadGame();
     }
 
@@ -38,7 +41,10 @@ public class GameplayController : MonoBehaviour
 
     private void SetBorders()
     {
-        borders.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, gameClipPlane));
+        leftBorder.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0.5f, gameClipPlane));
+        rightBorder.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(1f, 0.5f, gameClipPlane));
+        topBorder.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 1f, gameClipPlane));
+        bottomBorder.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, -0.05f, gameClipPlane));
     }
 
     private void LoadBricks()
@@ -72,9 +78,16 @@ public class GameplayController : MonoBehaviour
 
     private void SpawnNewVawe(int count)
     {
-        for (int i = 0; i <= count; i++)
+        HashSet<BrickPosition.position> position = new HashSet<BrickPosition.position>();
+
+        while (position.Count < count)
         {
-            Vector3 newBrickPosition = BrickPosition.GetBrickCoord(Random.Range(0, 4), Random.Range(1, 6));
+            position.Add(new BrickPosition.position(Random.Range(0, 4), Random.Range(1, 6)));
+        }
+
+        foreach (BrickPosition.position pos in position)
+        {
+            Vector3 newBrickPosition = BrickPosition.GetBrickCoord(pos.GetSide(), pos.GetPosition());
             GameObject newBrick = Instantiate(brick, newBrickPosition, Quaternion.identity);
             newBrick.GetComponent<Brick>().SetHP(hpBricks, hpBricks);
         }
