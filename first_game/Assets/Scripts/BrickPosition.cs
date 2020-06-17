@@ -4,6 +4,28 @@ using UnityEngine;
 
 public static class BrickPosition
 {
+    public struct position
+    {
+        int side;
+        int pos;
+
+        public position(int side, int pos)
+        {
+            this.side = side;
+            this.pos = pos;
+        }
+
+        public int GetSide()
+        {
+            return side;
+        }
+
+        public int GetPosition()
+        {
+            return pos;
+        }
+    }
+
     static readonly Dictionary<int, Vector3> front = new Dictionary<int, Vector3>
     {
         [1] = new Vector3(-3.03f, 5.5f, -3.03f),

@@ -78,9 +78,16 @@ public class GameplayController : MonoBehaviour
 
     private void SpawnNewVawe(int count)
     {
-        for (int i = 0; i <= count; i++)
+        HashSet<BrickPosition.position> position = new HashSet<BrickPosition.position>();
+
+        while (position.Count < count)
         {
-            Vector3 newBrickPosition = BrickPosition.GetBrickCoord(Random.Range(0, 4), Random.Range(1, 6));
+            position.Add(new BrickPosition.position(Random.Range(0, 4), Random.Range(1, 6)));
+        }
+
+        foreach (BrickPosition.position pos in position)
+        {
+            Vector3 newBrickPosition = BrickPosition.GetBrickCoord(pos.GetSide(), pos.GetPosition());
             GameObject newBrick = Instantiate(brick, newBrickPosition, Quaternion.identity);
             newBrick.GetComponent<Brick>().SetHP(hpBricks, hpBricks);
         }
