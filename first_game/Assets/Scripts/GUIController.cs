@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class GUIController : MonoBehaviour
 {
-    public GameObject losing_message;
+    public GameObject losingMessage;
+    public GameObject mainMenu;
 
     private void Start()
     {
@@ -13,12 +14,23 @@ public class GUIController : MonoBehaviour
 
     private void OnBrickTouchingBottom()
     {
-        losing_message.gameObject.SetActive(true);
+        losingMessage.gameObject.SetActive(true);
     }
 
     public void OnClickLosingMessageBack()
     {
-        losing_message.SetActive(false);
+        losingMessage.SetActive(false);
         GameEvents.onClickLoosingMessage.Invoke();
+    }
+
+    public void OnClickStart()
+    {
+        mainMenu.SetActive(false);
+        GameEvents.onStartGame.Invoke();
+    }
+
+    public void OnExitClick()
+    {
+        Application.Quit();
     }
 }

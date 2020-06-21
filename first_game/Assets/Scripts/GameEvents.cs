@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public static class GameEvents
 {
-
+    public static UnityEvent onStartGame = new UnityEvent();
     public static UnityEvent onDestroyAllBalls = new UnityEvent();
     public static UnityEvent onBrickTouchingBottom = new UnityEvent();
     public static UnityEvent onClickLoosingMessage = new UnityEvent();
