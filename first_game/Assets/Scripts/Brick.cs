@@ -65,7 +65,7 @@ public class Brick : MonoBehaviour
         if (collision.gameObject.CompareTag("Ball"))
         {
             hp--;
-            changeColor();
+            ChangeColor();
             if (hp <= 0)
                 Destroy(gameObject);
         }
@@ -81,7 +81,7 @@ public class Brick : MonoBehaviour
         }
     }
 
-    private void changeColor()
+    private void ChangeColor()
     {
         if (hp < maxHP && hp > 0)
         {
@@ -94,7 +94,7 @@ public class Brick : MonoBehaviour
     {
         hp = newHP;
         maxHP = newMaxHP;
-        changeColor();
+        ChangeColor();
     }
 
     public int GetHP() { return hp; }

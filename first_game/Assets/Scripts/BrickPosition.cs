@@ -2,30 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class BrickPosition
+public class BrickPosition
 {
-    public struct position
-    {
-        int side;
-        int pos;
-
-        public position(int side, int pos)
-        {
-            this.side = side;
-            this.pos = pos;
-        }
-
-        public int GetSide()
-        {
-            return side;
-        }
-
-        public int GetPosition()
-        {
-            return pos;
-        }
-    }
-
     static readonly Dictionary<int, Vector3> front = new Dictionary<int, Vector3>
     {
         [1] = new Vector3(-3.03f, 5.5f, -3.03f),
@@ -178,13 +156,13 @@ public static class BrickPosition
     {
         switch (side)
         {
-            case Constants.FRONT_SIDE:
+            case GameTools.FRONT_SIDE:
                 return front[position];
-            case Constants.LEFT_SIDE:
+            case GameTools.LEFT_SIDE:
                 return left[position];
-            case Constants.BACK_SIDE:
+            case GameTools.BACK_SIDE:
                 return back[position];
-            case Constants.RIGHT_SIDE:
+            case GameTools.RIGHT_SIDE:
                 return right[position];
             default:
                 return Vector3.zero;

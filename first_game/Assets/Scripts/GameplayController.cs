@@ -4,35 +4,29 @@ using UnityEngine;
 
 public class GameplayController : MonoBehaviour
 {
-    public GameObject brick;
-    public int CountNewBricks = 8;
+    public GameObject wood_brick;
+    public GameObject stone_brick;
     public GameObject leftBorder;
     public GameObject rightBorder;
     public GameObject topBorder;
     public GameObject bottomBorder;
 
     private float gameClipPlane;
-    private int hpBricks = 1;
+    private int numberlevel = 0;
+    private int currentWave = 0;
+    private GameTools.level currentLevel;
 
     private void Awake()
     {
         gameClipPlane = Camera.main.nearClipPlane + 2f;
-        SaveLoad.LoadGame();
     }
 
     void Start()
     {
         SetBorders();
 
-        if (SaveLoad.CheckSave())
-        {
-            LoadBricks();
-            hpBricks = GameState.GetHpNewBricks();
-        }
-        else
-        {
-            SpawnNewVawe(CountNewBricks);
-        }
+        currentLevel = Level.GetLevel(numberlevel);
+        SpawnBricks();
 
         GameEvents.onDestroyAllBalls.AddListener(OnDestroyAllBalls);
         GameEvents.onClickLoosingMessage.AddListener(OnClickLoosingMessage);
@@ -47,57 +41,36 @@ public class GameplayController : MonoBehaviour
         bottomBorder.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, -0.05f, gameClipPlane));
     }
 
-    private void LoadBricks()
+    private void SpawnBricks()
     {
-        List<GameState.BrickState> savedBricks = GameState.GetSavedBricks();
-        foreach (GameState.BrickState obj in savedBricks)
+        foreach (GameTools.brickInf brick in currentLevel.GetPoolBricks())
         {
-            GameObject newBrick = Instantiate(brick, obj.position.ToVector3(), Quaternion.identity);
-            newBrick.GetComponent<Brick>().SetHP(obj.hp, obj.maxHP);
+            if (brick.GetWave() == currentWave)
+            {
+                Vector3 newBrickPosition = BrickPosition.GetBrickCoord(brick.GetSide(), brick.GetPosition());
+                GameObject goBrick = GetBrickOnType(brick.GetBrickType());
+                Instantiate(goBrick, newBrickPosition, Quaternion.identity);
+            }
         }
     }
 
-    private void SaveState()
+    private GameObject GetBrickOnType(int type)
     {
-        GameObject[] allBricks = GameObject.FindGameObjectsWithTag("Brick");
-        GameObject shootPosition = GameObject.FindGameObjectWithTag("Player");
-        List<GameState.BrickState> allBricksState = new List<GameState.BrickState>();
-
-        foreach (GameObject obj in allBricks)
+        switch (type)
         {
-            allBricksState.Add(new GameState.BrickState(obj));
-        }
-
-        GameState.SaveBricks(allBricksState);
-        GameState.SavePosition(shootPosition.transform.position);
-        GameState.SaveCountBalls(shootPosition.GetComponent<PlayerCotrol>().GetCountBalls());
-        GameState.SaveHpNewBricks(hpBricks);
-
-        SaveLoad.SaveGame();
-    }
-
-    private void SpawnNewVawe(int count)
-    {
-        HashSet<BrickPosition.position> position = new HashSet<BrickPosition.position>();
-
-        while (position.Count < count)
-        {
-            position.Add(new BrickPosition.position(Random.Range(0, 4), Random.Range(1, 6)));
-        }
-
-        foreach (BrickPosition.position pos in position)
-        {
-            Vector3 newBrickPosition = BrickPosition.GetBrickCoord(pos.GetSide(), pos.GetPosition());
-            GameObject newBrick = Instantiate(brick, newBrickPosition, Quaternion.identity);
-            newBrick.GetComponent<Brick>().SetHP(hpBricks, hpBricks);
+            case GameTools.BRICK_WOOD:
+                return wood_brick;
+            case GameTools.BRICK_STONE:
+                return stone_brick;
+            default:
+                return new GameObject();
         }
     }
 
     private void OnDestroyAllBalls()
     {
-        hpBricks++;
-        SpawnNewVawe(CountNewBricks);
-        SaveState();
+        currentWave++;
+        SpawnBricks();
     }
 
     private void OnClickLoosingMessage()
@@ -111,5 +84,7 @@ public class GameplayController : MonoBehaviour
     }
 
     public float GetGameClipPlane() { return gameClipPlane; }
+
+    public void SetLevel(int level) { this.numberlevel = level; }
 
 }

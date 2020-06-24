@@ -6,6 +6,7 @@ public class GUIController : MonoBehaviour
 {
     public GameObject losingMessage;
     public GameObject mainMenu;
+    public GameObject levelMenu;
 
     private void Start()
     {
@@ -26,6 +27,13 @@ public class GUIController : MonoBehaviour
     public void OnClickStart()
     {
         mainMenu.SetActive(false);
+        levelMenu.SetActive(true);
+    }
+
+    public void OnClickLevel1()
+    {
+        levelMenu.SetActive(false);
+        GetComponent<GameplayController>().SetLevel(1);
         GameEvents.onStartGame.Invoke();
     }
 

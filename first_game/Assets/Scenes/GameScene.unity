@@ -1228,7 +1228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82c45a2840f8149e89ca5d887c20bff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  losingMessage: {fileID: 0}
+  losingMessage: {fileID: 864968741}
   mainMenu: {fileID: 619528666}
 --- !u!114 &519420034
 MonoBehaviour:

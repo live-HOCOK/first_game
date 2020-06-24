@@ -7,7 +7,7 @@ public class PlayerCotrol : MonoBehaviour
     public GameObject ball;
     public float coolDown = 0.3f;
 
-    private int countBalls;
+    private int countBalls = 1;
     private GameplayController gameController;
     private LineRenderer arrow;
     private bool canShoot = true;
@@ -19,16 +19,7 @@ public class PlayerCotrol : MonoBehaviour
         arrow = GetComponent<LineRenderer>();
         gameController = Camera.main.GetComponent<GameplayController>();
 
-        if (SaveLoad.CheckSave())
-        {
-            transform.position = GameState.GetSavedPosition().ToVector3();
-            countBalls = GameState.GetCountBalls();
-        }
-        else
-        {
-            transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0f, gameController.GetGameClipPlane()));
-            countBalls = 1;
-        }
+        transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0f, gameController.GetGameClipPlane()));
 
         countBallsOnCurrentShoot = countBalls;
 
@@ -90,7 +81,7 @@ public class PlayerCotrol : MonoBehaviour
     private void OnDestroyAllBalls()
     {
         transform.position = new Vector3(PoolBalls.NextPosition(), transform.position.y, transform.position.z);
-        countBalls++;
+        //countBalls++;
         countBallsOnCurrentShoot = countBalls;
         canShoot = true;
     }
